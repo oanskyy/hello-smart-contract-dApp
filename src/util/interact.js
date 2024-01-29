@@ -162,15 +162,3 @@ export const updateMessage = async (address, message) => {
 		}
 	}
 }
-
-// //set up transaction parameters
-// const transactionParameters = {
-// 	to: contractAddress, // Required except during contract publications.
-// 	from: address, // must match user's active address.
-// 	data: helloWorldContract.methods.update(message).encodeABI()
-// }
-
-// export const txHash = await window.ethereum.request({
-// 	method: "eth_sendTransaction",
-// 	params: [transactionParameters]
-// })
