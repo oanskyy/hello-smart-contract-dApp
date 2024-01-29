@@ -8,7 +8,6 @@ import {
 	getCurrentWalletConnected
 } from "./util/interact.js"
 
-import alchemylogo from "./alchemylogo.svg"
 import oanskylogo from "./0xlogo.png"
 
 const HelloWorld = () => {
@@ -19,10 +18,25 @@ const HelloWorld = () => {
 	const [newMessage, setNewMessage] = useState("")
 
 	//called only once
-	useEffect(async () => {}, [])
+	useEffect(() => {
+		async function fetchMessage() {
+			const message = await loadCurrentMessage()
+			setMessage(message)
+		}
+		fetchMessage()
+		addSmartContractListener()
+	}, [])
 
 	function addSmartContractListener() {
-		//TODO: implement
+		helloWorldContract.events.UpdatedMessages({}, (error, data) => {
+			if (error) {
+				setStatus("😥 " + error.message)
+			} else {
+				setMessage(data.returnValues[1])
+				setNewMessage("")
+				setStatus("🎉 Your message has been updated!")
+			}
+		})
 	}
 
 	function addWalletListener() {
@@ -38,7 +52,6 @@ const HelloWorld = () => {
 	}
 
 	//the UI of our component
-	//   <img id="logo" src={alchemylogo} alt='logo'/>
 	return (
 		<div id='container'>
 			<img
@@ -47,7 +60,6 @@ const HelloWorld = () => {
 				alt='logo'
 				style={{ width: "70px", height: "50px" }}
 			/>
-			<img id='logo' src={alchemylogo} alt='logo' />
 
 			<button id='walletButton' onClick={connectWalletPressed}>
 				{walletAddress.length > 0 ? (
