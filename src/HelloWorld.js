@@ -6,6 +6,7 @@ import {
 	updateMessage,
 	loadCurrentMessage,
 	getCurrentWalletConnected
+	// txHash
 } from "./util/interact.js"
 
 import oanskylogo from "./0xlogo.png"
@@ -42,7 +43,11 @@ const HelloWorld = () => {
 			} else {
 				setMessage(data.returnValues[1])
 				setNewMessage("")
-				setStatus("🎉 Your message has been updated!")
+				setStatus("🎉 Your message has been updated! ")
+				// setStatus(
+				// 	"🎉 Your message has been updated! " +
+				// 		`<a href="https://sepolia.etherscan.io/tx/${txHash}" target='_blank' rel='noreferrer'>✅ View the status of your transaction on Etherscan!</a>`
+				// )
 			}
 		})
 	}
@@ -85,7 +90,8 @@ const HelloWorld = () => {
 	}
 
 	const onUpdatePressed = async () => {
-		//TODO: implement
+		const { status } = await updateMessage(walletAddress, newMessage)
+		setStatus(status)
 	}
 
 	//the UI of our component
